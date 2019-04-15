@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Imagine Bookstore</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+		<!-- bootstrap -->
+		<link href="{{url_for('static', filename = 'bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+		<link href="{{url_for('static', filename = 'bootstrap/css/bootstrap-responsive.min.css')}}" rel="stylesheet">
+
+		<link href="{{url_for('static', filename = 'css/bootstrappage.css')}}" rel="stylesheet"/>
+		<!-- global styles -->
+		<link href="{{url_for('static', filename = 'css/flexslider.css')}}" rel="stylesheet"/>
+		<link href="{{url_for('static', filename = 'css/main.css')}}" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+		<!-- scripts -->
+		<script src="{{url_for('static', filename = 'js/jquery-1.7.2.min.js')}}"></script>
+		<script src="{{url_for('static', filename = 'bootstrap/js/bootstrap.min.js')}}"></script>
+		<script src="{{url_for('static', filename = 'js/superfish.js')}}"></script>
+		<script src="{{url_for('static', filename = 'js/jquery.scrolltotop.js')}}"></script>
+		<!--[if lt IE 9]>			
+			<script src="{{url_for('static', filename = 'http://html5shim.googlecode.com/svn/trunk/html5.js')}}"></script>
+			<script src="{{url_for('static', filename = 'js/respond.min.js')}}"></script>
+		<![endif]-->
+	</head>
+    <body>		
+			<div id="top-bar" class="container">
+			<div class="row">
+				<a href="/" style="padding-left: 30px;" class="logo pull-left"><img src="{{url_for('static', filename = 'images/logo.png')}}" height = "130px" width="300px" class="site_logo" alt=""></a>
+				<div class="span8">
+					<div class="account pull-right">
+						<ul class="user-menu">	
+							{% if login %}
+							<li><a href="/profile">{{login_name}}</a></li>
+							<li><a href="/profile">My Account</a></li>
+							<li><a href="/logout">Sign Out</a></li>		
+							<li><a href="/cart"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a><span class="badge badge-info">{{qty}}</span></li> 
+							{% else %}
+							<li><a href="/login">Log In</a></li>				
+							<li><a href="/cart"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a></li> 
+							{% endif %}	
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+			<div id="wrapper" class="container">
+			<section class="navbar main-menu">
+
+				<div class="navbar-inner main-menu">	
+				<div class="span4">
+				<nav id="menu" class="pull-left">
+						<!-- <ul>
+							<li><a href="books.html" style="font-size: 10pt">Best Selling</a>
+							<ul>						
+									<li><a href="books.html">This month</a></li>
+									<li><a href="books.html">This year</a></li>	
+									<li><a href="books.html">All time</a></li>	
+							</ul>
+							</li>															
+							<li><a href="" style="font-size: 10pt">New Releases</a>
+							<ul>						
+									<li><a href="books.html">This week</a></li>	
+									<li><a href="books.html">This month</a></li>
+									<li><a href="books.html">This year</a></li>	
+							</ul></li>	
+							<li><a href="" style="font-size: 10pt">Genres</a>
+								<ul>						
+									<li><a href="books.html">Romance</a></li>
+									<li><a href="books.html">Crime</a></li>
+									<li><a href="books.html">Historical</a></li>
+									<li><a href="books.html">Sci-fi</a></li>
+									<li><a href="books.html">Mystery</a></li>
+									<li><a href="books.html">Historical</a></li>
+									<li><a href="books.html">Kids</a></li>
+									<li><a href="books.html">Fantasy</a></li>
+									<li><a href="books.html">Non-Fiction</a></li>
+									<li><a href="books.html">Graphic Novel</a></li>			
+									<li><a href="books.html">Biography</a></li>			
+								</ul>
+							</li>							
+						</ul> -->
+					</nav>
+				</div>			
+					<nav id="menu" class="pull-right">
+					 <div class="search" style="padding-top: 5px;padding-left: -10px">
+      <input type="text" class="searchTerm" placeholder="Search">
+       <a href="books_search.html"><i class="fa fa-search fa-2x"></i></a>
+       
+ </div>
+ </nav>
+				</div>
+			</section>	
+			<div class="accordion-group">
+					<div class="accordion-inner">
+						<div class="row-fluid">
+							<div class="span6">
+				<div class="accordion-heading">
+								<h4 style="font-size: 15pt; color: #2980B9;margin-left: 15px">Order Information</h4></div>
+								<div class="control-group">
+									<label class="control-label"><strong>{{first_name}}, {{last_name}}</strong></label>
+								</div>				  
+								<div class="control-group">
+										<label class="control-label"><strong>{{email}}</strong></label>
+								</div>
+								<div class="control-group">
+										<label class="control-label"><strong>{{mobile}}</strong></label>
+								</div>
+								<div class="control-group">
+										<label class="control-label"><strong>{{address}}, {{city}}, {{state}}, {{pcode}}</strong></label>
+								</div>
+								<div class="control-group">
+										<label class="control-label"style="text-align: right"><strong>{{time}}</strong></label>
+								</div>
+								<div class="control-group">
+										<label class="control-label"style="text-align: right"><strong>Total: ${{total}}</strong></label>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			{% block content %}
+            {% for item in items %}			
+			<div class="accordion-group">
+					<div class="accordion-inner">
+						<div class="row-fluid">
+							<div class="span6">
+				<div class="accordion-heading">
+								<div class="control-group">
+									<label class="control-label">Title: {{item['title']}}</label>
+								</div>				  
+								<div class="control-group">
+										<label class="control-label">Price: {{item['price']}}</label>
+								</div>
+								<div class="control-group">
+										<label class="control-label">Author: {{item['author']}}</label>
+								</div>
+								<div class="control-group">
+										<label class="control-label">Price: {{item['price']}}</label>
+								</div>
+								<div class="control-group">
+										<label class="control-label">Quantity: {{item['quantity']}}</label>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% endblock %}
+				<section id="footer-bar">
+				<div class="row">
+					
+					<div class="span5">
+						<p class="logo"><img src="{{url_for('static', filename = 'images/logo.png')}}" class="site_logo" alt=""></p>
+						<p>All the books you can imagine - in one place. Shop now!</p>
+						
+					</div>					
+				</div>	
+			</section>
+			
+		</div>
+		<script src="{{url_for('static', filename = 'js/common.js')}}"></script>	
+    </body>
+</html>

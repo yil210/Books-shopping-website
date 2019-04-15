@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Imagine Bookstore</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+		<!-- bootstrap -->
+		<link href="{{url_for('static', filename = 'bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">      
+		<link href="{{url_for('static', filename = 'bootstrap/css/bootstrap-responsive.min.css')}}" rel="stylesheet">
+		
+		<link href="{{url_for('static', filename = 'css/bootstrappage.css')}}" rel="stylesheet"/>
+		
+		<!-- global styles -->
+		<link href="{{url_for('static', filename = 'css/flexslider.css')}}" rel="stylesheet"/>
+		<link href="{{url_for('static', filename = 'css/main.css')}}" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<!-- scripts -->
+		<script src="{{url_for('static', filename = 'js/jquery-1.7.2.min.js')}}"></script>
+		<script src="{{url_for('static', filename = 'bootstrap/js/bootstrap.min.js')}}"></script>				
+		<script src="{{url_for('static', filename = 'js/superfish.js')}}"></script>	
+		<script src="{{url_for('static', filename = 'js/jquery.scrolltotop.js')}}"></script>
+		
+	</head>
+    <body>		
+		<div id="top-bar" class="container">
+			<div class="row">
+				<a href="/" style="padding-left: 30px;" class="logo pull-left"><img src="{{url_for('static', filename = 'images/logo.png')}}" height = "130px" width="300px" class="site_logo" alt=""></a>
+				<div class="span8">
+					<div class="account pull-right">
+						<ul class="user-menu">	
+							{% if login %}
+							<li><a href="/profile">{{login_name}}</a></li>
+							<li><a href="/profile">My Account</a></li>
+							<li><a href="/logout">Sign Out</a></li>		
+							<li><a href="/cart"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a><span class="badge badge-info">{{qty}}</span></li> 
+							{% else %}
+							<li><a href="/login">Log In</a></li>				
+							<li><a href="/cart"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a></li> 
+							{% endif %}	
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="wrapper" class="container">
+				<section class="navbar main-menu">
+
+						<div class="navbar-inner main-menu">	
+						<div class="span4">
+						<nav id="menu" class="pull-left">
+								
+						</nav>
+						</div>			
+							<nav id="menu" class="pull-right">
+
+							</nav>
+						</div>
+					</section>				
+			<section class="header_text sub">
+				<h4 class="title" align="center"><span class="text" style="font-size: 20pt; color: #2980B9;margin-left: 23px">Checkout</span></h4>
+				{% with errors = get_flashed_messages(category_filter=["error"]) %}
+        {% if errors %}
+        <div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+				</button>
+            {%- for msg in errors %}
+            <h5>{{ msg }}</h5>
+            {% endfor -%}  
+        </div>
+				{% endif %}
+				{% endwith %}
+			</section>	
+
+			<form id="myForm" action="/to_checkout" method="POST">
+			<section class="main-content">
+				<div class="row">
+					<div class="span12">
+						<div class="accordion" id="accordion2">
+								<div class="accordion-group">
+										<div class="accordion-inner">
+											<div class="row-fluid">
+												<div class="span6">
+									<div class="accordion-heading">
+	
+													<h4 style="font-size: 15pt; color: #2980B9;margin-left: 15px">Personal Infomation</h4></div>
+													<div class="control-group">
+														<label class="control-label">*First Name</label>
+														<div class="controls">
+															<input id='fname' name='fname' type="text" placeholder="" class="input-xlarge check-error">
+														</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label">*Last Name</label>
+														<div class="controls">
+															<input id='lname' name='lname' type="text" placeholder="" class="input-xlarge">
+														</div>
+													</div>					  
+													<div class="control-group">
+														<label class="control-label">*Email Address</label>
+														<div class="controls">
+															<input id='email' name='email' type="text" placeholder="" class="input-xlarge">
+														</div>
+													</div>
+													<div class="control-group">
+															<label class="control-label">*Mobile</label>
+															<div class="controls">
+																<input id='mobile' name='mobile' type="text" placeholder="" class="input-xlarge check-error">
+															</div>
+														</div>
+					
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="accordion-group">
+									<div class="accordion-inner">
+										<div class="row-fluid">
+											<div class="span6">
+								<div class="accordion-heading">
+
+												<h4 style="font-size: 15pt; color: #2980B9;margin-left: 15px">Delivery Address</h4></div>
+												<div class="control-group">
+													<label class="control-label">*Address</label>
+													<div class="controls">
+														<input id='address' name='address' type="text" placeholder="" class="input-xlarge check-error">
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label">Apt</label>
+													<div class="controls">
+														<input id='apt' name='apt' type="text" placeholder="" class="input-xlarge">
+													</div>
+												</div>					  
+												
+												<div class="control-group">
+														<label class="control-label">*City:</label>
+														<div class="controls">
+															<input id='city' name='city' type="text" placeholder="" class="input-xlarge check-error">
+														</div>
+													</div>
+													<div class="control-group">
+															<label class="control-label">*State:</label>
+															<div class="controls">
+																<input id='state' name='state' type="text" placeholder="" class="input-xlarge check-error">
+															</div>
+														</div>
+													<div class="control-group">
+														<label class="control-label">*Postal Code:</label>
+														<div class="controls">
+															<input id='pcode' name='pcode' type="text" placeholder="" class="input-xlarge check-error">
+														</div>
+													</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="accordion-group">
+								
+								<!-- <div id="collapseThree" class="accordion-body collapse"> -->
+									<div class="accordion-inner">
+										<div class="row-fluid">
+											<div class="span6">
+								<div class="accordion-heading">
+
+												<h4 style="font-size: 15pt; color: #2980B9;margin-left: 15px">Shipping Options</h4></div>
+ 									 <input id='free' name='free' type="radio" name="gender" value="free" checked="true"> Free Shipping (Free, expect 2-3 weeks)<br>
+  									<input id='express' name='express' type="radio" name="gender" value="express"> Express Shipping (+$3.50, expect 1 week)<br>
+  									<input id='premium' name='premium'type="radio" name="gender" value="premium"> Premium Shipping (+$7.00, expect 1-3 days)
+												</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>				
+					</div>
+				</div>
+				<div>
+				</div>
+				<!-- <p class="buttons center">				
+						<button class="btn btn-inverse" type="submit" id="checkout">Place your order</button>
+					</p> -->
+					<input type="hidden" id="stripeToken" name="stripeToken" />
+    				<input type="hidden" id="stripeEmail" name="stripeEmail" />
+				 	<p class="buttons center">			
+						<button class="btn btn-inverse" type="submit" id="checkout">Place your order</button>
+					</p>
+			</section>			
+		</form>		
+			<section id="footer-bar">
+				<div class="row">
+					
+					<div class="span5">
+						<p>All the books you can imagine - in one place. Shop now!</p>
+					</div>					
+				</div>	
+			</section>
+			
+		</div>
+		<script src="{{url_for('static', filename = 'js/common.js')}}"></script>
+		<script src="t{{url_for('static', filename = 'js/jquery.flexslider-min.js')}}"></script>
+		<!-- <script type="text/javascript">
+			$(function() {
+				$(document).ready(function() {
+					$('.flexslider').flexslider({
+						animation: "fade",
+						slideshowSpeed: 4000,
+						animationSpeed: 600,
+						controlNav: false,
+						directionNav: true,
+						controlsContainer: ".flex-container" // the container that holds the flexslider
+					});
+				});
+			});
+			function myFunction() {
+			var elementsExist = document.getElementsByClassName("check-error");
+			if (elementsExist != null){
+				for (var i = 0;i<elementsExist.length;i++) {
+				// console.log(elementsExist.length);
+
+					if(elementsExist[i].value==""){
+						elementsExist[i].placeholder="Missing Information";
+						// console.log(document.getElementById("error-message").innerHTML);
+						document.getElementById("error-message").innerHTML="Error- Missing Information. Please fill all areas with *"
+						
+					}
+				}
+			} -->
+			<script src="https://checkout.stripe.com/checkout.js"></script>	
+
+			<script>
+				var handler = StripeCheckout.configure({
+				  key: 'pk_test_Tnc0xtkXgKesYLvseKccKFAX00dYYBFKns',
+				  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+				  locale: 'auto',
+				  token: function(token) {
+					// You can access the token ID with `token.id`.
+					// Get the token ID to your server-side code for use.
+					$("#stripeToken").val(token.id);
+					$("#stripeEmail").val(token.email);
+					$("#myForm").submit();
+				  }
+				});
+				
+				document.getElementById('checkout').addEventListener('click', function(e) {
+					$("#lname").validate("lname");
+					$("#fname").validate("fname");
+					
+					$("#email").validate("email");
+					$("#mobile").validate("mobile");
+
+					$("#address").validate("address");
+
+					$("#city").validate("city");
+					
+					$("#state").validate("state");
+
+					$("#pcode").validate("pcode");
+				  // Open Checkout with further options:
+				  handler.open({
+					name: 'Demo Site',
+					description: '2 widgets',
+				  });
+				  e.preventDefault();
+				});
+				
+				// Close Checkout on page navigation:
+				window.addEventListener('popstate', function() {
+				  handler.close();
+				});
+				</script>
+}
+    
+		</script>
+    </body>
+</html>
+
+<script>
+$.fn.validate = function(tips){
+
+if($(this).val() == "" || $.trim($(this).val()).length == 0){
+		alert("All info box in this page cannot be empty, please validate your input.");
+		throw SyntaxError(); 
+}
+}
+
+</script>
+
+<script>
+		$('.alert').alert()
+	</script>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Imagine Bookstore</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+		<!-- bootstrap -->
+		<link href="{{url_for('static', filename = 'bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">      
+		<link href="{{url_for('static', filename = 'bootstrap/css/bootstrap-responsive.min.css')}}" rel="stylesheet">
+		<link href="{{url_for('static', filename = 'css/bootstrappage.css')}}" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+		
+		<!-- global styles -->
+		<link href="{{url_for('static', filename = 'css/flexslider.css')}}" rel="stylesheet"/>
+		<link href="{{url_for('static', filename = 'css/main.css')}}" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<!-- scripts -->
+		<script src="{{url_for('static', filename = 'js/jquery-1.7.2.min.js')}}"></script>
+		<script src="{{url_for('static', filename = 'bootstrap/js/bootstrap.min.js')}}"></script>				
+		<script src="{{url_for('static', filename = 'js/superfish.js')}}"></script>	
+		<script src="{{url_for('static', filename = 'js/jquery.scrolltotop.js')}}"></script>
+		
+	</head>
+    <body>		
+		<div id="top-bar" class="container">
+			<div class="row">
+				<a href="/" style="padding-left: 30px;" class="logo pull-left"><img src="{{url_for('static', filename = 'images/logo.png')}}" height = "130px" width="300px" class="site_logo" alt=""></a>
+				<div class="span8">
+					<div class="account pull-right">
+						<ul class="user-menu">	
+							{% if login %}
+							<li><a href="/profile">{{login_name}}</a></li>
+							<li><a href="/profile">My Account</a></li>
+							<li><a href="/logout">Sign Out</a></li>		
+							<li><a href="/cart"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a><span class="badge badge-info">{{qty}}</span></li> 
+							{% else %}
+							<li><a href="/login">Log In</a></li>				
+							<li><a href="/cart"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a></li> 
+							{% endif %}	
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="wrapper" class="container">
+			<section class="navbar main-menu">
+
+				<div class="navbar-inner main-menu">	
+				<div class="span4">
+				<nav id="menu" class="pull-left">
+						<ul>
+							<li><a href="#" style="font-size: 10pt">Genres</a>
+								<ul>						
+									<li><a href="/genre/fiction">Fiction</a></li>
+									<li><a href="/genre/literature">Literature</a></li>
+									<li><a href="/genre/history">History</a></li>
+									<li><a href="/genre/biographies">Biographies</a></li>
+									<li><a href="/genre/romance">Romance</a></li>
+									<li><a href="/genre/sci-fi">Sci-Fi</a></li>
+									<li><a href="/genre/computer">Computer</a></li>
+									<li><a href="/genre/arts-photography">Art & Photography</a></li>
+								</ul>
+							</li>							
+						</ul>
+					</nav>
+				</div>			
+				<nav id="menu" class="pull-right">
+				<form method="POST">
+					 <div class="search" style="padding-top: 5px;padding-left: -10px">
+      		<input id="search_item" name="search_item" type="text" class="searchTerm" placeholder="Search">
+					<a href="/"><button class="btn-small" type="submit" ><i class="fas fa-search"></i></button></a>	
+						
+ 					</div>
+				</form>
+ 				</nav>
+				</div>
+			</section>	
+			<br />
+			{% if notgenre %}
+			<section class="header_text sub">
+				<h4><span style="font-size: 20pt; color: #2980B9">Search Results for <i>"{{search_item}}"</i></span></h4>
+			</section>
+			{% else %}
+			<section class="header_text sub">
+				<h4><span style="font-size: 20pt; color: #2980B9">Genre: <i>"{{search_item}}"</i></span></h4>
+			</section>
+			{% endif %}
+			<section class="main-content">
+				<br/>
+				<!-- flask flash alert if user is not logged in and try to view cart page -->
+				{% with errors = get_flashed_messages(category_filter=["error"]) %}
+				{% if errors %}
+				<div class="alert alert-danger" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+				</button>
+						{%- for msg in errors %}
+						<h5>{{ msg }}</h5>
+						{% endfor -%}
+				</div>
+				{% endif %}
+				{% endwith %}
+
+				<!-- Show all related result books according to the current search query-->
+				{% block content %}
+				{% for books in bookChunk %}
+				<div class="row">						
+					<div class="span">								
+						<ul class="thumbnails listing-products" style="width: 100%; margin: auto;">
+							{% for book in books %}	
+							<li class="span3">
+									<div  class="product-box">
+										<span class="sale_tag"></span>
+										<p><a href="/view_details/{{ book['_id'] }}"><img src={{ book['imagePath'] }} height="300px" width="175px" alt="" /></a></p>
+										<h>{{ book['title'] }}</h></br>
+										<h>{{ book['author'] }}</h></br>
+										<p class="price">${{ book['price'] }}</p>
+										<a href="/add_to_cart/{{ book['_id'] }}" <i class="fa fa-cart-plus fa-2x" aria-hidden="true"></i></a>
+									</div>
+							</li>  
+							{% endfor %}
+						</ul>								
+						<hr>
+					</div>		
+				</div>
+				{% endfor %}
+				{% endblock %}
+			</section>
+			
+
+				<section id="footer-bar">
+				<div class="row">
+					
+					<div class="span5">
+						<p class="logo"><img src="{{url_for('static', filename = 'images/logo.png')}}" class="site_logo" alt=""></p>
+						<p>All the books you can imagine - in one place. Shop now!</p>
+						
+					</div>					
+				</div>	
+			</section>
+			
+		</div>
+		<script src="{{url_for('static', filename = 'js/common.js')}}"></script>
+		<!-- <script>
+			$(function () {
+				$('#myTab a:first').tab('show');
+				$('#myTab a').click(function (e) {
+					e.preventDefault();
+					$(this).tab('show');
+				})
+			})
+			$(document).ready(function() {
+				$('.thumbnail').fancybox({
+					openEffect  : 'none',
+					closeEffect : 'none'
+				});
+				
+				$('#myCarousel-2').carousel({
+                    interval: 2500
+                });								
+			});
+		</script> -->
+    </body>
+</html>

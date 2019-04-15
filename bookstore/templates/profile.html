@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Imagine Bookstore</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+		<!-- bootstrap -->
+		<link href="{{url_for('static', filename = 'bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">      
+		<link href="{{url_for('static', filename = 'bootstrap/css/bootstrap-responsive.min.css')}}" rel="stylesheet">
+		
+		<link href="{{url_for('static', filename = 'css/bootstrappage.css')}}" rel="stylesheet"/>
+		
+		<!-- global styles -->
+		<link href="{{url_for('static', filename = 'css/flexslider.css')}}" rel="stylesheet"/>
+		<link href="{{url_for('static', filename = 'css/main.css')}}" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<!-- scripts -->
+		<script src="{{url_for('static', filename = 'js/jquery-1.7.2.min.js')}}"></script>
+		<script src="{{url_for('static', filename = 'bootstrap/js/bootstrap.min.js')}}"></script>				
+		<script src="{{url_for('static', filename = 'js/superfish.js')}}"></script>	
+		<script src="{{url_for('static', filename = 'js/jquery.scrolltotop.js')}}"></script>
+		
+	</head>
+    <body>		
+		<div id="top-bar" class="container">
+			<div class="row">
+				<a href="/" style="padding-left: 30px;" class="logo pull-left"><img src="{{url_for('static', filename = 'images/logo.png')}}" height = "130px" width="300px" class="site_logo" alt=""></a>
+				<div class="span8">
+					<div class="account pull-right">
+						<ul class="user-menu">	
+							{% if login %}
+							<li><a href="/profile">{{login_name}}</a></li>
+							<li><a href="/profile">My Account</a></li>
+							<li><a href="/logout">Sign Out</a></li>		
+							<li><a href="/cart"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a><span class="badge badge-info">{{qty}}</span></li> 
+							{% else %}
+							<li><a href="/login">Log In</a></li>				
+							<li><a href="/cart"><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i></a></li> 
+							{% endif %}	
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="wrapper" class="container">
+				<section class="navbar main-menu">
+
+						<div class="navbar-inner main-menu">	
+						<div class="span4">
+						<nav id="menu" class="pull-left">
+								
+						</nav>
+						</div>			
+							<nav id="menu" class="pull-right">
+
+							</nav>
+						</div>
+					</section>				
+			<section class="header_text sub">
+				<h4 class="title" align="center"><span class="text" style="font-size: 20pt; color: #2980B9;margin-left: 23px">Profile</span></h4>
+				{% with successes = get_flashed_messages(category_filter=["success"]) %}
+        {% if successes %}
+        <!-- <div class="alert-message block-message error"> -->
+            <div class="alert alert-success" role="alert">
+            <!-- <a class="close" href=" ">×</a > -->
+            {%- for msg in successes %}
+            <li>{{ msg }}</li>
+            {% endfor -%}
+        </div>
+        {% endif %}
+        {% endwith %}
+			</section>	
+
+			<form method="POST">
+			<section class="main-content">
+				<div class="row">
+					<div class="span12">
+						<div class="accordion" id="accordion2">
+								<div class="accordion-group">
+										<div class="accordion-inner">
+											<div class="row-fluid">
+												<div class="span6">
+									<div class="accordion-heading">
+	
+													<h4 style="font-size: 15pt; color: #2980B9;margin-left: 15px">Personal Infomation</h4></div>
+													<div class="control-group">
+														<label class="control-label">Username: {{user_name}}</label>
+							
+													</div>
+													<div class="control-group">
+														<label class="control-label">Email: {{email}}</label>
+														
+                                                    </div>
+                                                    <div class="control-group">
+															Password: <input type="password" id="passwd" name="passwd">
+														</div> 
+														<div>
+																<p class="buttons">				
+																
+																<button class="btn btn-inverse" type="submit" id="checkout">Change password</button>
+															</p>      
+														
+														</div>				  
+											</div>
+										</div>
+									</div>
+                                </div>
+                                {% block content %}
+                                {% for order in orders %}
+								<div class="accordion-group">
+									<div class="accordion-inner">
+										<div class="row-fluid">
+											<div class="span6">
+								<div class="accordion-heading">
+												<h4 style="font-size: 15pt; color: #2980B9;margin-left: 15px">Order Information</h4></div>
+												<div class="control-group">
+													<a href="/order_details/{{order['_id']}}"><label class="control-label">Order ID: {{order['_id']}}</label></a>
+													
+												</div>
+												<div class="control-group">
+													<label class="control-label">Time: {{order['order_time']}}</label>
+												</div>				  
+												
+												<div class="control-group">
+														<label class="control-label">Total: {{order['total']}}</label>
+												</div>
+										</div>
+									</div>
+								</div>
+                            </div>
+                            {% endfor %}
+                            {% endblock %}
+
+                            
+
+							</div>
+						</div>				
+					</div>
+				</div>
+				<div>
+				</div>
+			</section>			
+        </form>	
+        	
+			<section id="footer-bar">
+				<div class="row">
+					
+					<div class="span5">
+						<p>All the books you can imagine - in one place. Shop now!</p>
+					</div>					
+				</div>	
+			</section>
+			
+		</div>
+		<script src="{{url_for('static', filename = 'js/common.js')}}"></script>
+		<script src="t{{url_for('static', filename = 'js/jquery.flexslider-min.js')}}"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(document).ready(function() {
+					$('.flexslider').flexslider({
+						animation: "fade",
+						slideshowSpeed: 4000,
+						animationSpeed: 600,
+						controlNav: false,
+						directionNav: true,
+						controlsContainer: ".flex-container" // the container that holds the flexslider
+					});
+				});
+			});
+			function myFunction() {
+			var elementsExist = document.getElementsByClassName("check-error");
+			if (elementsExist != null){
+				for (var i = 0;i<elementsExist.length;i++) {
+				// console.log(elementsExist.length);
+
+					if(elementsExist[i].value==""){
+						elementsExist[i].placeholder="Missing Information";
+						// console.log(document.getElementById("error-message").innerHTML);
+						document.getElementById("error-message").innerHTML="Error- Missing Information. Please fill all areas with *"
+						
+					}
+				}
+			}
+}
+    
+		</script>
+    </body>
+</html>
+
+<script>
+		$('.alert').alert()
+</script>
